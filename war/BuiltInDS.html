@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="shortcut icon" href="favicon.ico">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <!--                                           -->
+        <!-- Any title is fine                         -->
+        <!--                                           -->
+        <title>BuiltInDS</title>
+
+        <!-- IMPORTANT : You must set the variable isomorphicDir to [MODULE_NAME]/sc/ so that the SmartGWT resource are 
+          correctly resolved -->
+        <script> var isomorphicDir = "builtinds/sc/"; </script>
+        <script>window.isc_useSimpleNames = false;</script>
+
+        <!--                                           -->
+        <!-- This script loads your compiled module.   -->
+        <!-- If you add any GWT meta tags, they must   -->
+        <!-- be added before this line.                -->
+        <!--                                           -->
+        <script type="text/javascript" language="javascript" src="builtinds/builtinds.nocache.js"></script>
+
+        <!-- The following script is required if you're running (Super)DevMode and are using module
+             definitions that contain <script> tags.  Normally, this script is loaded automatically
+             by builtinds.nocache.js above, but this isn't possible when (Super)DevMode is running.
+             Note: it should not create any issue to always load it below (even if already loaded). -->
+        <script type="text/javascript" language="javascript" src="builtinds/loadScriptTagFiles.js"></script>
+
+    </head>
+
+    <!--                                           -->
+    <!-- The body can have arbitrary html, or      -->
+    <!-- you can leave the body empty if you want  -->
+    <!-- to create a completely dynamic UI.        -->
+    <!--                                           -->
+
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    
+    <!-- Load our React component. -->
+    <!--<script src="js/app1.js"></script>-->
+    <!--<script src="js/app2.js"></script>-->
+    <!--<script src="js/app3.js" type="text/babel"></script>-->
+    <body>
+
+        <script>isc.autoDraw = false;</script>
+        <!--load the datasources-->
+        <script src="builtinds/sc/DataSourceLoader?dataSource=supplyItem,animals,employees"></script>
+
+        <!-- OPTIONAL: include this if you want history support -->
+        <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
+                style="position:absolute;width:0;height:0;border:0"></iframe>
+
+        <div id="app">There is nothing here you know... Did you forget to include the react script?</div>
+
+    </body>
+</html>
