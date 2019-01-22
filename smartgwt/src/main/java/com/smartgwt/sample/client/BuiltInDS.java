@@ -44,7 +44,8 @@ public class BuiltInDS implements EntryPoint {
 		Layout mainLayout = initializeLayout();
 		// mainLayout.draw();
 		GlobalGWT.register("mainLayout", mainLayout.getOrCreateJsObj());
-		GlobalReact.startApp();
+
+		GlobalGWT.startApp();
 	}
 
 	private void registerDebugKey() {

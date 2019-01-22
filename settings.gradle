@@ -1,0 +1,3 @@
+rootProject.name = 'smartgwt-kotlin'
+include 'smartgwt'
+include 'app'

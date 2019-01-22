@@ -1,4 +1,4 @@
-package test.hello
+package sample
 
 class LinesPresenter(override val view: LinesView) : Presenter<LinesView, Array<String>> {
     init {

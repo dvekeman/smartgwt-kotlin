@@ -1,0 +1,99 @@
+plugins {
+	id "de.esoco.gwt" version "1.0.7"
+}
+
+def SMARTGWT_HOME = '/opt/smartgwtee'
+
+repositories {
+	flatDir {
+		dirs "$SMARTGWT_HOME/lib"
+	}
+}
+
+dependencies {
+	compile fileTree(dir: "$SMARTGWT_HOME/lib", include: ['*.jar'])
+}
+
+gwt {
+	module 'com.smartgwt.sample.BuiltInDS'
+	gwtVersion = '2.8.2'
+	gwtServletLib = false
+	gwtElementalLib = false
+	gwtPluginEclipse = false
+	jettyVersion = '9.4.12.v20180830'
+
+	compile {
+		logLevel = "INFO"
+		compileReport = true
+		draftCompile = true // Development setting
+		checkAssertions = false
+		style = "DETAILED" // Development setting
+		optimize = 5
+		failOnError = true
+		sourceLevel = "1.8"
+		localWorkers = 2
+		localWorkersMem = 2048
+		methodNameDisplayMode = "FULL" // Development setting
+
+		// jsInteropMode = "JS"
+		generateJsInteropExports = true
+		// includeJsInteropExports = ["filter1", "filter2"]
+		// excludeJsInteropExports = ["filter1", "filter2"]
+
+		// extraArgs = ["-firstArgument", "-secondArgument"]
+
+        strict = false
+
+	}
+
+	jetty {
+		bindAddress = "127.0.0.1"
+		/** request log filename. */
+		logRequestFile
+		/** info/warn/debug log filename. */
+		logFile
+		/** port to listen on. */
+		port = 9080
+		/** port to listen for stop command. */
+		stopPort = 9089
+		/** security string for stop command. */
+		stopKey = "JETTY-STOP"
+
+		/** Java args */
+		maxHeapSize="1024m"
+		minHeapSize="512m"
+		maxPermSize="128m"
+		debugJava = true
+		debugPort = 9555
+		debugSuspend = false
+		javaArgs = ["-Xmx256m", "-Xms256m"]
+	}
+
+	dev {
+		bindAddress = "127.0.0.1"
+		failOnError = false
+		precompile = false
+		/** The port where the code server will run. */
+		port = 9876
+		// enforceStrictResources = false
+		sourceLevel = "1.8"
+		logLevel = "INFO"
+		// jsInteropMode = "JS"
+		generateJsInteropExports = true
+		methodNameDisplayMode = "FULL" 
+		strict = false
+		noServer = false
+
+		// extraArgs = ["-firstArgument", "-secondArgument"]
+
+		/** Java args */
+		maxHeapSize="2g"
+		minHeapSize="1g"
+		debugJava = true
+		debugPort = 8000
+		debugSuspend = false
+		javaArgs = ["-Xmx2g", "-Xms1g"]
+	}
+}
+
+war.dependsOn(":app:copyToWeb")

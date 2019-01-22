@@ -3,6 +3,8 @@ package com.smartgwt.sample.client;
 import java.util.HashMap;
 import java.util.Map;
 
+import jsinterop.annotations.JsMethod;
+import jsinterop.annotations.JsPackage;
 import jsinterop.annotations.JsType;
 
 @JsType(namespace = "globalgwt")
@@ -17,5 +19,8 @@ public class GlobalGWT {
 	public static Object lookup(String name) {
 		return shared.get(name);
 	}
-	
+
+	@JsMethod(namespace = JsPackage.GLOBAL)
+	public static native void startApp();
+
 }

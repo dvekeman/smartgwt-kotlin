@@ -1,4 +1,4 @@
-package test.hello
+package sample
 
 abstract class ApplicationBase {
     abstract val stateKeys: List<String>
