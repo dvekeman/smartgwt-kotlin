@@ -22,11 +22,16 @@
          <inherits name="com.smartclientee.toolskinnative.ToolSkinNativeResources"/>
     -->
 
-    <inherits name="com.smartgwtee.SmartGwtEENoTheme"/>
+    <!-- DEBUG -->
+    <!--<inherits name="com.smartgwtee.SmartGwtEENoTheme"/>-->
+    <inherits name="com.smartgwt.SmartGwtNoScriptNoTheme"/>
+    <inherits name="com.smartclientee.debug.SmartClientEEDebug"/>
 
-    <inherits name="com.smartgwt.RealtimeMessaging"/>
+    <!--<inherits name="com.smartgwt.RealtimeMessaging"/>-->
+    <inherits name="com.smartgwt.debug.RealtimeMessagingDebug"/>
 
     <inherits name="com.smartclient.theme.enterprise.Enterprise"/>
+    <!-- DEBUG -->
 
     <!-- Uncomment lines below for GWT Super Dev Mode Support in GWT versions before 2.7.0:
        - both lines needed for GWT < 2.6, only the first line needed for GWT 2.6.x

@@ -308,7 +308,7 @@ external open class Window : Layout {
     open fun removeItems(items: Array<Any?>): Array<Any> = definedExternally
 //    override fun addMember(newMember: Canvas, position: Number?): Unit = definedExternally
 //    override fun addMembers(newMembers: Canvas, position: Number?): Unit = definedExternally
-//    override fun addMembers(newMembers: Array<Any?>, position: Number?): Unit = definedExternally
+//    override fun addMembers(newMembers: Array<Any?>): Unit = definedExternally
 //    override fun revealChild(child: String): Unit = definedExternally
 //    override fun revealChild(child: Canvas): Unit = definedExternally
     open fun setAutoSize(autoSize: Boolean): Unit = definedExternally
@@ -4514,24 +4514,13 @@ external open class ListGrid : VLayout, DataBoundComponent {
     open fun getRelatedDataSource(record: ListGridRecord): DataSource = definedExternally
     open fun setCanReorderRecords(canReorderRecords: Boolean): Unit = definedExternally
     open fun setData(newData: Array<Any?>): Unit = definedExternally
-    open fun setSelectionType(selectionType: String /* "none" */): Unit = definedExternally
-    open fun setSelectionType(selectionType: String /* "simple" */): Unit = definedExternally
-    open fun setSelectionType(selectionType: String /* "single" */): Unit = definedExternally
-    open fun setSelectionType(selectionType: String /* "multiple" */): Unit = definedExternally
-    open fun setSelectionAppearance(selectionAppearance: String /* "checkbox" */): Unit = definedExternally
-    open fun setSelectionAppearance(selectionAppearance: String /* "rowStyle" */): Unit = definedExternally
-    open fun setBodyOverflow(overflow: String /* "auto" */): Unit = definedExternally
-    open fun setBodyOverflow(overflow: String /* "visible" */): Unit = definedExternally
-    open fun setBodyOverflow(overflow: String /* "hidden" */): Unit = definedExternally
-    open fun setBodyOverflow(overflow: String /* "scroll" */): Unit = definedExternally
-    open fun setBodyOverflow(overflow: String /* "clip-h" */): Unit = definedExternally
-    open fun setBodyOverflow(overflow: String /* "clip-v" */): Unit = definedExternally
+    open fun setSelectionType(selectionType: String /* "none" | simple | single | multiple */): Unit = definedExternally
+    open fun setSelectionAppearance(selectionAppearance: String /* "checkbox" | "rowStyle" */): Unit = definedExternally
+    open fun setBodyOverflow(overflow: String /* "auto" | visible | hidden | scroll | clip-h | clip-v */): Unit = definedExternally
     open fun setBodyStyleName(styleName: String): Unit = definedExternally
     open fun setAlternateBodyStyleName(styleName: String): Unit = definedExternally
     open fun setAlternateRecordStyles(alternateStyles: Boolean): Unit = definedExternally
-    open fun setAutoFitData(autoFitData: String /* "vertical" */): Unit = definedExternally
-    open fun setAutoFitData(autoFitData: String /* "horizontal" */): Unit = definedExternally
-    open fun setAutoFitData(autoFitData: String /* "both" */): Unit = definedExternally
+    open fun setAutoFitData(autoFitData: String /* "vertical" | horizontal | both */): Unit = definedExternally
     open fun setAutoFitExtraRecords(extraRecords: Number): Unit = definedExternally
     open fun setAutoFitMaxRecords(maxRecords: Number): Unit = definedExternally
     open fun setAutoFitMaxHeight(height: Number): Unit = definedExternally
@@ -4542,9 +4531,7 @@ external open class ListGrid : VLayout, DataBoundComponent {
     open fun autoFitFields(fields: Array<Any?>? = definedExternally /* null */): Unit = definedExternally
     open fun setAutoFitWidth(fieldName: String, autoFit: Boolean): Unit = definedExternally
     open fun setAutoFitFieldWidths(autoFit: Boolean, dontResetWidths: Boolean? = definedExternally /* null */): Unit = definedExternally
-    open fun setAutoFitWidthApproach(approach: String /* "value" */): Unit = definedExternally
-    open fun setAutoFitWidthApproach(approach: String /* "title" */): Unit = definedExternally
-    open fun setAutoFitWidthApproach(approach: String /* "both" */): Unit = definedExternally
+    open fun setAutoFitWidthApproach(approach: String /* "value" | title | both */): Unit = definedExternally
     open fun setFieldProperties(fieldNum: String, properties: ListGridField): Unit = definedExternally
     open fun setFieldProperties(fieldNum: Number, properties: ListGridField): Unit = definedExternally
     open fun setFieldMinWidth(fieldNum: String, width: Number): Unit = definedExternally
@@ -4642,20 +4629,20 @@ external open class ListGrid : VLayout, DataBoundComponent {
     open fun focusInRow(row: Number): Unit = definedExternally
     open fun getFocusRow(): Number = definedExternally
     open fun scrollToColumn(colNum: Number, xPosition: String? /* "left" */ = definedExternally /* null */): Unit = definedExternally
-    open fun scrollToColumn(colNum: Number, xPosition: String? /* "right" */ = definedExternally /* null */): Unit = definedExternally
-    open fun scrollToColumn(colNum: Number, xPosition: String? /* "center" */ = definedExternally /* null */): Unit = definedExternally
+//    open fun scrollToColumn(colNum: Number, xPosition: String? /* "right" */ = definedExternally /* null */): Unit = definedExternally
+//    open fun scrollToColumn(colNum: Number, xPosition: String? /* "center" */ = definedExternally /* null */): Unit = definedExternally
     open fun scrollToRow(rowNum: Number, yPosition: String? /* "top" */ = definedExternally /* null */): Unit = definedExternally
-    open fun scrollToRow(rowNum: Number, yPosition: String? /* "center" */ = definedExternally /* null */): Unit = definedExternally
-    open fun scrollToRow(rowNum: Number, yPosition: String? /* "bottom" */ = definedExternally /* null */): Unit = definedExternally
+//    open fun scrollToRow(rowNum: Number, yPosition: String? /* "center" */ = definedExternally /* null */): Unit = definedExternally
+//    open fun scrollToRow(rowNum: Number, yPosition: String? /* "bottom" */ = definedExternally /* null */): Unit = definedExternally
     open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "left" */ = definedExternally /* null */, yPosition: String? /* "top" */ = definedExternally /* null */): Unit = definedExternally
-    open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "left" */ = definedExternally /* null */, yPosition: String? /* "center" */ = definedExternally /* null */): Unit = definedExternally
-    open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "left" */ = definedExternally /* null */, yPosition: String? /* "bottom" */ = definedExternally /* null */): Unit = definedExternally
-    open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "right" */ = definedExternally /* null */, yPosition: String? /* "top" */ = definedExternally /* null */): Unit = definedExternally
-    open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "right" */ = definedExternally /* null */, yPosition: String? /* "center" */ = definedExternally /* null */): Unit = definedExternally
-    open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "right" */ = definedExternally /* null */, yPosition: String? /* "bottom" */ = definedExternally /* null */): Unit = definedExternally
-    open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "center" */ = definedExternally /* null */, yPosition: String? /* "top" */ = definedExternally /* null */): Unit = definedExternally
-    open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "center" */ = definedExternally /* null */, yPosition: String? /* "center" */ = definedExternally /* null */): Unit = definedExternally
-    open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "center" */ = definedExternally /* null */, yPosition: String? /* "bottom" */ = definedExternally /* null */): Unit = definedExternally
+//    open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "left" */ = definedExternally /* null */, yPosition: String? /* "center" */ = definedExternally /* null */): Unit = definedExternally
+//    open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "left" */ = definedExternally /* null */, yPosition: String? /* "bottom" */ = definedExternally /* null */): Unit = definedExternally
+//    open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "right" */ = definedExternally /* null */, yPosition: String? /* "top" */ = definedExternally /* null */): Unit = definedExternally
+//    open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "right" */ = definedExternally /* null */, yPosition: String? /* "center" */ = definedExternally /* null */): Unit = definedExternally
+//    open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "right" */ = definedExternally /* null */, yPosition: String? /* "bottom" */ = definedExternally /* null */): Unit = definedExternally
+//    open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "center" */ = definedExternally /* null */, yPosition: String? /* "top" */ = definedExternally /* null */): Unit = definedExternally
+//    open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "center" */ = definedExternally /* null */, yPosition: String? /* "center" */ = definedExternally /* null */): Unit = definedExternally
+//    open fun scrollToCell(rowNum: Number, colNum: Number, xPosition: String? /* "center" */ = definedExternally /* null */, yPosition: String? /* "bottom" */ = definedExternally /* null */): Unit = definedExternally
     open fun recordClick(viewer: ListGrid, record: ListGridRecord, recordNum: Number, field: ListGridField, fieldNum: Number, value: Any, rawValue: Any): Boolean = definedExternally
     open fun recordDoubleClick(viewer: ListGrid, record: ListGridRecord, recordNum: Number, field: ListGridField, fieldNum: Number, value: Any, rawValue: Any): Boolean = definedExternally
     open fun setShowGridSummary(showGridSummary: Boolean): Unit = definedExternally
@@ -4787,8 +4774,8 @@ external open class ListGrid : VLayout, DataBoundComponent {
     open fun getEventColumn(x: Number? = definedExternally /* null */): Number = definedExternally
     open fun getRecordDropPosition(): dynamic /* String /* "none" */ | String /* "over" */ | String /* "before" */ | String /* "after" */ */ = definedExternally
     open fun getDropIndex(recordNum: Number? = definedExternally /* null */, reorderPosition: String? /* "over" */ = definedExternally /* null */): Number = definedExternally
-    open fun getDropIndex(recordNum: Number? = definedExternally /* null */, reorderPosition: String? /* "before" */ = definedExternally /* null */): Number = definedExternally
-    open fun getDropIndex(recordNum: Number? = definedExternally /* null */, reorderPosition: String? /* "after" */ = definedExternally /* null */): Number = definedExternally
+//    open fun getDropIndex(recordNum: Number? = definedExternally /* null */, reorderPosition: String? /* "before" */ = definedExternally /* null */): Number = definedExternally
+//    open fun getDropIndex(recordNum: Number? = definedExternally /* null */, reorderPosition: String? /* "after" */ = definedExternally /* null */): Number = definedExternally
     open fun cellSelectionChanged(cellList: Array<Any>): Boolean = definedExternally
     open fun selectionChanged(record: ListGridRecord, state: Boolean): Unit = definedExternally
 //    override fun selectionUpdated(record: Any, recordList: Array<Any?>): Unit = definedExternally
@@ -4838,9 +4825,9 @@ external open class ListGrid : VLayout, DataBoundComponent {
     open fun unsort(): Unit = definedExternally
     open fun resort(): Unit = definedExternally
     open fun sort(sortField: String? = definedExternally /* null */, sortDirection: String? /* "ascending" */ = definedExternally /* null */): Boolean = definedExternally
-    open fun sort(sortField: String? = definedExternally /* null */, sortDirection: String? /* "descending" */ = definedExternally /* null */): Boolean = definedExternally
+//    open fun sort(sortField: String? = definedExternally /* null */, sortDirection: String? /* "descending" */ = definedExternally /* null */): Boolean = definedExternally
     open fun sort(sortField: Number? = definedExternally /* null */, sortDirection: String? /* "ascending" */ = definedExternally /* null */): Boolean = definedExternally
-    open fun sort(sortField: Number? = definedExternally /* null */, sortDirection: String? /* "descending" */ = definedExternally /* null */): Boolean = definedExternally
+//    open fun sort(sortField: Number? = definedExternally /* null */, sortDirection: String? /* "descending" */ = definedExternally /* null */): Boolean = definedExternally
     open fun getSortField(): String = definedExternally
 //    override fun askForSort(): Unit = definedExternally
     open fun toggleSort(fieldName: String): Unit = definedExternally
@@ -4858,11 +4845,11 @@ external open class ListGrid : VLayout, DataBoundComponent {
     open fun displaySort(sortSpecifiers: Array<Any?>): Unit = definedExternally
     open fun applySortToData(sortSpecifiers: Array<Any?>): Unit = definedExternally
     open fun addEmbeddedComponent(component: Canvas, record: ListGridRecord, rowNum: Number? = definedExternally /* null */, colNum: Number? = definedExternally /* null */, position: String? /* "expand" */ = definedExternally /* null */): Unit = definedExternally
-    open fun addEmbeddedComponent(component: Canvas, record: ListGridRecord, rowNum: Number? = definedExternally /* null */, colNum: Number? = definedExternally /* null */, position: String? /* "within" */ = definedExternally /* null */): Unit = definedExternally
+//    open fun addEmbeddedComponent(component: Canvas, record: ListGridRecord, rowNum: Number? = definedExternally /* null */, colNum: Number? = definedExternally /* null */, position: String? /* "within" */ = definedExternally /* null */): Unit = definedExternally
     open fun removeEmbeddedComponent(record: Canvas, component: Number? = definedExternally /* null */): Unit = definedExternally
-    open fun removeEmbeddedComponent(record: Canvas, component: Canvas? = definedExternally /* null */): Unit = definedExternally
+//    open fun removeEmbeddedComponent(record: Canvas, component: Canvas? = definedExternally /* null */): Unit = definedExternally
     open fun removeEmbeddedComponent(record: ListGridRecord, component: Number? = definedExternally /* null */): Unit = definedExternally
-    open fun removeEmbeddedComponent(record: ListGridRecord, component: Canvas? = definedExternally /* null */): Unit = definedExternally
+//    open fun removeEmbeddedComponent(record: ListGridRecord, component: Canvas? = definedExternally /* null */): Unit = definedExternally
     open fun getRecordComponent(rowNum: Number, colNum: Number? = definedExternally /* null */): Canvas = definedExternally
     open fun chartData(labelField: String, dataFields: Array<String>? = definedExternally /* null */, dataRows: Array<Any?>? = definedExternally /* null */, chartProperties: FacetChart? = definedExternally /* null */, labelFieldFirst: Boolean? = definedExternally /* null */): FacetChart = definedExternally
     open fun chartRow(rowNum: Number, dataFields: Array<String>? = definedExternally /* null */, chartProperties: Chart? = definedExternally /* null */): Chart = definedExternally
@@ -10906,7 +10893,7 @@ external open class Layout : Canvas {
     open fun getMembersLength(): Number = definedExternally
     open fun addMember(newMember: Canvas, position: Number? = definedExternally /* null */): Unit = definedExternally
     open fun addMembers(newMembers: Canvas, position: Number? = definedExternally /* null */): Unit = definedExternally
-    open fun addMembers(newMembers: Array<Any?>, position: Number? = definedExternally /* null */): Unit = definedExternally
+    open fun addMembers(newMembers: Array<Any?>): Unit = definedExternally
     open fun removeMember(member: Canvas): Unit = definedExternally
     open fun removeMembers(members: Canvas): Unit = definedExternally
     open fun removeMembers(members: Array<Any?>): Unit = definedExternally
