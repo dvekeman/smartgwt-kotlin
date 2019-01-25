@@ -2,38 +2,52 @@ package sample
 
 import isc.*
 
-class MainView {
-    lateinit var presenter: MainPresenter
+/**
+ * Show the main grid using the store as the source of truth.
+ * 
+ * For now the view will be fully recreated many times, this will be refactored later.
+ */
+class MainView(val store: SampleStore) {
     
     var layout: isc.Layout
 
-    var boundForm: isc.DynamicForm = isc.DynamicForm.create()
-    var boundList: isc.ListGrid = isc.ListGrid.create()
-    var boundViewer: isc.DetailViewer = isc.DetailViewer.create()
-    var saveBtn: isc.IButton = isc.IButton.create(js("{'title': \"Save\"}") as Any)
-    var newBtn: isc.IButton = isc.IButton.create(js("{'title': \"New\"}") as Any)
-    var clearBtn: isc.IButton = isc.IButton.create(js("{'title': \"Clear\"}") as Any)
-    var filterBtn: isc.IButton = isc.IButton.create(js("{'title': \"Filter\"}") as Any)
-    var fetchBtn: isc.IButton = isc.IButton.create(js("{'title': \"Fetch\"}") as Any)
-
-
     init {
-        layout = createMainLayout()
+        var dsName = store.getState().mainState.dsName
+        layout = createMainLayout(dsName)
+
+        /** while this represents what we conceptually want, it is ugly for now (clear() and draw()) */
+        store.subscribe {
+            val newDsName = store.getState().mainState.dsName
+            println("Old $dsName vs new $newDsName")
+            if(dsName != newDsName){
+                dsName = newDsName
+                layout.clear()
+                layout = createMainLayout(newDsName)
+                register()
+            }
+        }
+        
+        /** Keeping here for reference in case we want to access legacy layouts **/
         // val layout = GlobalGWT.lookup("mainLayout") as isc.Layout
         // val layout = js("globalgwt.GlobalGWT.lookup(\"mainLayout\")")
 
         register()
     }
 
-    fun dispose() {
-        unregister()
+    private fun register() {
+        layout.draw()
     }
 
-    private fun createMainLayout(): isc.Layout {
-        val grid = createLeftMenu()
-        val mainBody = createBody()
+    fun dispose() {
+        layout.clear()
+    }
 
+    private fun createMainLayout(dsName: String?): isc.Layout {
         val mainLayout = isc.HLayout.create()
+        
+        val mainBody = createBody(dsName)
+        val grid = createLeftMenu()
+
         mainLayout.setWidth("100%")
         mainLayout.addMembers(arrayOf(grid, mainBody) as Array<Any?>)
         return mainLayout
@@ -73,20 +87,51 @@ class MainView {
         grid.asDynamic().recordClick =
                 { viewer: ListGrid, record: ListGridRecord, recordNum: Number, field: ListGridField, fieldNum: Number, value: Any, rawValue: Any ->
                     val dsName = record.asDynamic().dsName
-                    bindComponents(dsName)
+                    store.dispatch(MainChangeDataSource(dsName))
                 }
 
         return grid
     }
 
-    private fun createBody(): isc.Layout {
+    private fun createBody(dsName: String?): isc.Layout {
+        val saveBtn: isc.IButton = isc.IButton.create(js("{'title': \"Save\"}") as Any)
+        val newBtn: isc.IButton = isc.IButton.create(js("{'title': \"New\"}") as Any)
+        val clearBtn: isc.IButton = isc.IButton.create(js("{'title': \"Clear\"}") as Any)
+        val filterBtn: isc.IButton = isc.IButton.create(js("{'title': \"Filter\"}") as Any)
+        val fetchBtn: isc.IButton = isc.IButton.create(js("{'title': \"Fetch\"}") as Any)
+        val boundForm: isc.DynamicForm = isc.DynamicForm.create()
+        val boundList: isc.ListGrid = isc.ListGrid.create()
+        val boundViewer: isc.DetailViewer = isc.DetailViewer.create()
+
+        println("createBody:: create body for $dsName...")
+        if(dsName != null){
+            newBtn.enable()
+            saveBtn.disable()
+            
+            val ds = isc.DataSource.get(dsName)
+            ds?.useHttpProxy = true
+            if(ds?.requestProperties != null){
+                val requestProperties = ds.requestProperties
+                val requestHeaders = requestProperties.httpHeaders
+                requestHeaders.asDynamic()["Origin"] = "http://localhost:8088"
+                requestProperties.httpHeaders = requestHeaders
+                ds.requestProperties = requestProperties
+            }
+
+            println("createBody:: DataSource: ${ds.asDynamic()}")
+            boundList.asDynamic().setDataSource(ds)
+            boundViewer.asDynamic().setDataSource(ds)
+            boundForm.asDynamic().setDataSource(ds)
+            boundList.fetchData()
+
+        }
+
         val vStack = isc.VStack.create()
         //		vStack.setLeft(175);
         //		vStack.setTop(75);
         vStack.setWidth("70%")
         vStack.membersMargin = 20
 
-        boundList = isc.ListGrid.create()
         boundList.setHeight(200)
         boundList.canEdit = true
 
@@ -99,7 +144,6 @@ class MainView {
 
         vStack.addMember(boundList)
 
-        boundForm = isc.DynamicForm.create()
         boundForm.numCols = 6
         boundForm.autoFocus = false
         vStack.addMember(boundForm)
@@ -155,29 +199,10 @@ class MainView {
 
         vStack.addMember(hLayout)
 
-        boundViewer = isc.DetailViewer.create()
         vStack.addMember(boundViewer)
 
         return vStack
         //vStack.draw();
     }
 
-    private fun bindComponents(dsName: String) {
-        val ds = isc.DataSource.get(dsName)
-        boundList.asDynamic().setDataSource(ds)
-        boundViewer.asDynamic().setDataSource(ds)
-        boundForm.asDynamic().setDataSource(ds)
-        boundList.fetchData()
-        newBtn.enable()
-        saveBtn.disable()
-    }
-
-
-    private fun register() {
-        layout.show()
-    }
-
-    private fun unregister() {
-        layout.hide()
-    }
 }

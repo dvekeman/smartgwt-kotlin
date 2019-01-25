@@ -1,16 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="shortcut icon" href="favicon.ico">
     <title>Kotlin</title>
+
+    <!-- SMARTCLIENT -->
+    <SCRIPT>
+      var isomorphicDir = "http://localhost:8182/builtinds/sc/";
+      window.isc_useSimpleNames = false;
+    </SCRIPT>
+    <SCRIPT SRC="./lib/isomorphic/system/modules-debug/ISC_Core.js"></SCRIPT>
+    <SCRIPT SRC="./lib/isomorphic/system/modules-debug/ISC_Foundation.js"></SCRIPT>
+    <SCRIPT SRC="./lib/isomorphic/system/modules-debug/ISC_Containers.js"></SCRIPT>
+    <SCRIPT SRC="./lib/isomorphic/system/modules-debug/ISC_Grids.js"></SCRIPT>
+    <SCRIPT SRC="./lib/isomorphic/system/modules-debug/ISC_Forms.js"></SCRIPT>
+    <SCRIPT SRC="./lib/isomorphic/system/modules-debug/ISC_DataBinding.js"></SCRIPT>
+    <SCRIPT SRC="./lib/isomorphic/skins/Enterprise/load_skin.js"></SCRIPT>
+    <SCRIPT>
+      isc.setAutoDraw(false);
+    </SCRIPT>
+    <!-- END SMARTCLIENT -->
+
+
     <script type="text/javascript" language="JavaScript" src="main.bundle.js"></script>
 </head>
 <body>
-<h1>Hello, Kotlin</h1>
-<div>
-    <h1>Here we have kotlin frontend plugin example project</h1>
-    <p id="message"></p>
-    <div id="lines"></div>
-    <p id="addForm"><input type="text"><button>Add</button> </p>
-</div>
+
+    <!--load the datasources-->
+    <script src="http://localhost:8182/builtinds/sc/DataSourceLoader?dataSource=supplyItem,animals,employees"></script>
+
 </body>
 </html>

@@ -28,7 +28,7 @@
     <!-- The IDACall servlet handles all Built-in DataSource operations -->
     <servlet>
         <servlet-name>IDACall</servlet-name>
-        <servlet-class>com.isomorphic.servlet.IDACall</servlet-class>
+        <servlet-class>com.smartgwt.sample.server.servlet.CustomIDACall</servlet-class>
     </servlet>
 
     <!-- The RESTHandler servlet is like IDACall, but for REST requests -->

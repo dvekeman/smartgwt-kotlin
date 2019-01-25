@@ -7,6 +7,7 @@ import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.rpc.RPCManager;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.SortArrow;
 import com.smartgwt.client.util.Page;
@@ -41,6 +42,8 @@ public class BuiltInDS implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
+		RPCManager.setAllowCrossDomainCalls(true);
+		
 		Layout mainLayout = initializeLayout();
 		// mainLayout.draw();
 		GlobalGWT.register("mainLayout", mainLayout.getOrCreateJsObj());

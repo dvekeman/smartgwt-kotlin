@@ -8152,7 +8152,7 @@ external open class DataSource : Class {
         var deepCloneOnEdit: Boolean = definedExternally
         var deepCloneNonFieldValuesOnEdit: Boolean = definedExternally
         fun getDataSource(ID: String): DataSource = definedExternally
-        fun get(ID: String): DataSource = definedExternally
+        fun get(ID: String): DataSource? = definedExternally
         fun getFieldValue(field: FormItem, record: Record, dataPath: String, component: Canvas, reason: String): Any = definedExternally
         fun getFieldValue(field: DataSourceField, record: Record, dataPath: String, component: Canvas, reason: String): Any = definedExternally
         fun getFieldValue(field: ListGridField, record: Record, dataPath: String, component: Canvas, reason: String): Any = definedExternally

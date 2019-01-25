@@ -1,5 +1,7 @@
 # SmartGWT, SmartClient & KotlinJS
 
+***WARNING: doc is a bit outdated (doesn't mention redux and focus is now on app structure more than legacy integration)***
+
 This is a proof-of-concept project to develop a SmartClient application in [KotlinJS][4] using some legacy SmartGWT code.
 
 The example SmartGWT project comes from the Isomorphic sample projects (and is published here with permission of Isomorphic Software).
