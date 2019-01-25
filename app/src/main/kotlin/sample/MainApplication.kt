@@ -14,7 +14,8 @@ class MainApplication(val store: SampleStore) : ApplicationBase() {
      */
     override fun start() {
         store.dispatch(AddAppEvent("Startup at " + Date()))
-        view = MainView(store)
+        // view = MainView(store)
+        startReactApp(store)
     }
 
     /**
