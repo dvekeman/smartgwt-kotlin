@@ -2,17 +2,9 @@ body {
   text-align: center;
 }
 
-.ReactApp-header {
+.MainApplication-header {
   background-color: #000;
   height: 160px;
   padding: 20px;
   color: white;
-}
-
-.ReactApp-intro {
-  font-size: large;
-}
-
-.ReactApp-ticker {
-  font-size: medium;
 }

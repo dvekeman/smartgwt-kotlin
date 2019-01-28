@@ -52,7 +52,7 @@ val startApp: () -> Unit = {
     @Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE") 
     val store : SampleStore = 
             (state?.appState as SampleStore?) 
-                    ?: createStore(reducer = ::todoApp, preloadedState = AppState(), enhancer = rEnhancer())
+                    ?: createStore(reducer = ::mainReducer, preloadedState = AppState(), enhancer = rEnhancer())
     val unsubscribe = store.subscribe { println("State changed to: ${store.state}") }
 
     if (document.body != null) {
