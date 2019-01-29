@@ -17,8 +17,6 @@ data class AddAppEvent(val appEvent: String) : RAction
 data class SetVisibilityFilter(val filter: VisibilityFilter) : RAction
 
 data class MainChangeDataSource(val dsName: String): RAction
-class MainStartEdit: RAction
-class MainFinishEdit: RAction
 /** <<< ACTIONS **/
 
 enum class VisibilityFilter {
@@ -40,12 +38,6 @@ fun mainReducer(state: AppState = AppState(), action: RAction): AppState {
         is MainChangeDataSource -> 
             state.copy(mainState = state.mainState.copy( dsName = action.dsName ))
 
-        is MainStartEdit ->
-            state.copy(mainState = state.mainState.copy( isDirty = true ))
-
-        is MainFinishEdit ->
-            state.copy(mainState = state.mainState.copy( isDirty = false ))
-        
         // Required for the INIT action ('undefined' :(((((( )
         else -> state
     }

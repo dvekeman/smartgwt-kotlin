@@ -45,10 +45,10 @@ public class BuiltInDS implements EntryPoint {
 		RPCManager.setAllowCrossDomainCalls(true);
 		
 		Layout mainLayout = initializeLayout();
-		// mainLayout.draw();
-		GlobalGWT.register("mainLayout", mainLayout.getOrCreateJsObj());
-
-		GlobalGWT.startApp();
+		mainLayout.draw();
+//		GlobalGWT.register("mainLayout", mainLayout.getOrCreateJsObj());
+//
+//		GlobalGWT.startApp();
 	}
 
 	private void registerDebugKey() {
