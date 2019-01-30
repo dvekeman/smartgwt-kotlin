@@ -96,4 +96,4 @@ gwt {
 	}
 }
 
-war.dependsOn(":app:copyToWeb")
+// war.dependsOn(":app:copyToWeb")

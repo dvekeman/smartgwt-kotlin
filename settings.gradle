@@ -1,3 +1,4 @@
 rootProject.name = 'smartgwt-kotlin'
 include 'smartgwt'
-include 'app'
+include 'app-react-redux'
+include 'app-redux'

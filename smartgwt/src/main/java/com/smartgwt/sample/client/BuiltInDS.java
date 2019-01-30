@@ -1,7 +1,6 @@
 package com.smartgwt.sample.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.smartgwt.client.core.KeyIdentifier;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
@@ -10,9 +9,6 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.rpc.RPCManager;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.SortArrow;
-import com.smartgwt.client.util.Page;
-import com.smartgwt.client.util.PageKeyHandler;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -46,21 +42,21 @@ public class BuiltInDS implements EntryPoint {
 		
 		Layout mainLayout = initializeLayout();
 		mainLayout.draw();
-//		GlobalGWT.register("mainLayout", mainLayout.getOrCreateJsObj());
-//
-//		GlobalGWT.startApp();
+		GlobalGWT.register("mainLayout", mainLayout.getOrCreateJsObj());
+
+		// GlobalGWT.startApp();
 	}
 
-	private void registerDebugKey() {
-		KeyIdentifier debugKey = new KeyIdentifier();
-		debugKey.setCtrlKey(true);
-		debugKey.setKeyName("D");
-		Page.registerKey(debugKey, new PageKeyHandler() {
-			public void execute(String keyName) {
-				SC.showConsole();
-			}
-		});
-	}
+//	private void registerDebugKey() {
+//		KeyIdentifier debugKey = new KeyIdentifier();
+//		debugKey.setCtrlKey(true);
+//		debugKey.setKeyName("D");
+//		Page.registerKey(debugKey, new PageKeyHandler() {
+//			public void execute(String keyName) {
+//				SC.showConsole();
+//			}
+//		});
+//	}
 
 	private Layout initializeLayout() {
 		ListGrid grid = createLeftMenu();
@@ -76,8 +72,6 @@ public class BuiltInDS implements EntryPoint {
 		m.getOuterElement();
 		
 		ListGrid grid = new ListGrid();
-//		grid.setLeft(20);
-//		grid.setTop(75);
 		grid.setWidth(130);
 		grid.setHeight100();
 		grid.setLeaveScrollbarGap(false);
@@ -101,23 +95,8 @@ public class BuiltInDS implements EntryPoint {
 
 	private Layout createBody() {
 		VStack vStack = new VStack();
-//		vStack.setLeft(175);
-//		vStack.setTop(75);
 		vStack.setWidth("70%");
 		vStack.setMembersMargin(20);
-
-//		Label label = new Label();
-//		label.setContents("<ul>" +
-//				"<li>select a datasource from the list at left to bind to these components</li>" +
-//				"<li>click a record in the grid to view and edit that record in the form</li>" +
-//				"<li>click <b>New</b> to start editing a new record in the form</li>" +
-//				"<li>click <b>Save</b> to save changes to a new or edited record in the form</li>" +
-//				"<li>click <b>Clear</b> to clear all fields in the form</li>" +
-//				"<li>click <b>Filter</b> to filter (substring match) the grid based on form values</li>" +
-//				"<li>click <b>Fetch</b> to fetch records (exact match) for the grid based on form values</li>" +
-//				"<li>double-click a record in the grid to edit inline (press Return, or arrow/tab to another record, to save)</li>" +
-//				"</ul>");
-//		vStack.addMember(label);
 
 		boundList = new ListGrid();
 		boundList.setHeight(200);
@@ -201,7 +180,6 @@ public class BuiltInDS implements EntryPoint {
 		vStack.addMember(boundViewer);
 
 		return vStack;
-		//vStack.draw();
 	}
 
 	private void bindComponents(String dsName) {
