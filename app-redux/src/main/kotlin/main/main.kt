@@ -76,7 +76,7 @@ fun start(initialStore: SampleStore? = null): ApplicationBase {
     val store : SampleStore = initialStore ?: createMainStore()
     val unsubscribe = store.subscribe { 
         println("State changed to: ")
-        println(store.state)
+        println(store.state.mainState)
     }
 
     val application = MainApplication(store)

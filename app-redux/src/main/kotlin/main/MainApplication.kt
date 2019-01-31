@@ -9,7 +9,34 @@ import isc.withClickDispatch
 import kotlinext.js.requireAll
 import redux.RAction
 import redux.state
-import kotlin.js.Date
+
+
+/** STATE / MODEL -------------------------------------------------------------------------------------------------- **/
+
+data class MainState(val visibleModule: Section)
+
+/** ---------------------------------------------------------------------------------------------------------------- **/
+
+/** ACTIONS / MESSAGES --------------------------------------------------------------------------------------------- **/
+
+data class ChangeSection(val activeSection: Section) : RAction
+
+/** ---------------------------------------------------------------------------------------------------------------- **/
+
+/** REDUCER / UPDATE ----------------------------------------------------------------------------------------------- **/
+
+fun mainReducer(mainState: MainState = MainState(visibleModule = Section.NONE), action: RAction) =
+        when (action) {
+
+            is ChangeSection ->
+                mainState.copy(visibleModule = action.activeSection)
+
+            else -> mainState
+
+        }
+
+/** -----------------------------------------------------------------------------------------------------------------**/
+
 
 abstract class ApplicationBase {
     abstract fun start()
@@ -17,26 +44,8 @@ abstract class ApplicationBase {
 }
 
 enum class Section(val title: String) {
-    NONE("None"), NEW_LISTGRID("New ListGrid"), OLD_LISTGRID("Old ListGrid")
+    NONE("HOME"), NEW_LISTGRID("SmartClient ListGrid"), OLD_LISTGRID("SmartGWT ListGrid")
 }
-
-/** ACTIONS >>> **/
-data class ChangeSection(val activeSection: Section) : RAction
-/** <<< ACTIONS **/
-
-/** REDUCER >>> **/
-fun mainReducer(mainState: MainState = MainState(visibleModule = Section.NONE), action: RAction) = when (action) {
-
-    is ChangeSection ->
-        mainState.copy(visibleModule = action.activeSection)
-
-    else -> mainState
-
-}
-
-/** <<< REDUCER **/
-
-data class MainState(val visibleModule: Section)
 
 /**
  * Bootstrap the Main view.
@@ -52,13 +61,21 @@ class MainApplication(val store: SampleStore) : ApplicationBase() {
      * Start the application by show the main view.
      */
     override fun start() {
-        store.dispatch(AddAppEvent("Startup at " + Date()))
         requireAll(kotlinext.js.require.context("app-redux", true, js("/\\.css$/")))
 
         mainLayout = createMainLayout()
         mainLayout.draw()
 
+        var visibleModule = store.getState().mainState.visibleModule
         store.subscribe {
+            val newVisibleModule = store.getState().mainState.visibleModule
+
+            if(visibleModule == newVisibleModule){
+                println("No changes... (visibleModule: '$visibleModule') ")
+                return@subscribe
+            }
+
+            visibleModule = newVisibleModule
             bodyContainer.removeChild(bodyContainer.children[0])
 
             when (store.state.mainState.visibleModule) {
@@ -71,6 +88,8 @@ class MainApplication(val store: SampleStore) : ApplicationBase() {
                 }
 
                 Section.OLD_LISTGRID -> {
+                    // The js("...") part is ugly because - for some reason - 
+                    // kotlin does not yet find the globalgwt namespace (will be fixed)
                     bodyContainer.addChild(js("globalgwt.GlobalGWT.lookup(\"mainLayout\")"))
                     // bodyContainer.addChild(globalgwt.lookup("mainLayout") as isc.Canvas)
                 }
