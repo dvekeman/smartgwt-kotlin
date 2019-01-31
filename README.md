@@ -29,7 +29,7 @@ Instead of using plain JavaScript or TypeScript we will use Kotlin here.
 
 ## Demo in action
 
-![Kotlin JS + SmartGWT/SmartClient](https://media.giphy.com/media/hTAX6yUHerFGGd2gti/giphy.gif | width=600)
+![Kotlin JS + SmartGWT/SmartClient](doc/img/smartgwt-kotlin-demo.gif)
 
 ## Build & Deploy
 
