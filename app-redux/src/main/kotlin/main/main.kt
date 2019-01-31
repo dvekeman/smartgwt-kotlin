@@ -74,7 +74,10 @@ fun start(initialStore: SampleStore? = null): ApplicationBase {
     @Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
 
     val store : SampleStore = initialStore ?: createMainStore()
-    val unsubscribe = store.subscribe { println("State changed to: ${store.state}") }
+    val unsubscribe = store.subscribe { 
+        println("State changed to: ")
+        println(store.state)
+    }
 
     val application = MainApplication(store)
     application.start()

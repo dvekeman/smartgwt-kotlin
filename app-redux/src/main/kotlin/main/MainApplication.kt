@@ -71,7 +71,8 @@ class MainApplication(val store: SampleStore) : ApplicationBase() {
                 }
 
                 Section.OLD_LISTGRID -> {
-                    TODO()
+                    bodyContainer.addChild(js("globalgwt.GlobalGWT.lookup(\"mainLayout\")"))
+                    // bodyContainer.addChild(globalgwt.lookup("mainLayout") as isc.Canvas)
                 }
             }
         }

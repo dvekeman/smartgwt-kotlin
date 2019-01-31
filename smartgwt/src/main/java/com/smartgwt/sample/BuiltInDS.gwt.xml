@@ -62,5 +62,5 @@
     <!-- Limit permutations -->
     <set-property name="user.agent" value="safari" />
 
-    <entry-point class='com.smartgwt.main.client.BuiltInDS'/>
+    <entry-point class='com.smartgwt.sample.client.BuiltInDS'/>
 </module>
