@@ -1,14 +1,23 @@
 # Redux example
 
-## Startup
+This app is a Kotlin Js frontend application. The output is a JS bundle called `app.bundle.js`.
 
-There are several possibilities
+The app uses [SmartClient][1] to draw widgets on the screen and [Redux][2] to manage state.
 
-- Run the frontend standalone
-- Host the frontend together with the backend (inject the frontend script dynamically, see `BuiltInDS.java`)
-    - Start the app automatically (see build.gradle.kts set `main = 'call'` in the compileKotlin2Js)
-    - Start the app manually (see build.gradle.kts set `main = 'noCall'` in the compileKotlin2Js)
+The `copyToWeb` gradle task generates the output bundle and copies the necessary files to the `smartgwt` project which will host the app:
 
-This app assumes to run standalone. Ensure the _server-side_ SmartGWT is started before starting the app.
+**build/app.bundle.js** is copied into `../smartgwt/src/main/webapp/app`
 
+**src/main/web/app-redux.html** is copied into `../smartgwt/src/main/webapp`
+
+It must be in the _root_ of the web application to ease the isomorphic setup.
+
+**src/main/web/app-redux** is copied into `../smartgwt/src/main/webapp/app-redux`
+
+These are some relative assets
+
+See the [main README][../README.MD] for more information
+
+[1]: https://www.isomorphic.com
+[2]: https://redux.js.org/
  

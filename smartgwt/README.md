@@ -16,10 +16,6 @@ Run the following command from the parent directory (the root gradle project)
 ./gradlew :smartgwt:gwtRun
 ```
 
-This will startup the _server side_ part. The server will be available at 'http://127.0.0.1:9080/BuiltInDS.html' (see smartgwt/build.gradle for the server configuration options).
-By default it does not render anything but a blank page.
-Start one of the frontend apps to connect to it.
-
-Another possibility is to automatically load and start a frontend app. See BuiltInDs.java `injectClientKtScript`. 
+See the [main README][../README.MD] for more information
 
 [1]: https://github.com/esoco/gwt-gradle-plugin
