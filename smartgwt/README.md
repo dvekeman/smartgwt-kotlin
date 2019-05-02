@@ -16,6 +16,6 @@ Run the following command from the parent directory (the root gradle project)
 ./gradlew :smartgwt:gwtRun
 ```
 
-See the [main README](../README.MD) for more information
+See the [main README](../README.md) for more information
 
 [1]: https://github.com/esoco/gwt-gradle-plugin
