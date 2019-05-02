@@ -16,7 +16,7 @@ It must be in the _root_ of the web application to ease the isomorphic setup.
 
 These are some relative assets
 
-See the [main README][../README.MD] for more information
+See the [main README](../README.MD) for more information
 
 [1]: https://www.isomorphic.com
 [2]: https://redux.js.org/
