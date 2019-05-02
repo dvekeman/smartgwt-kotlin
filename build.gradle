@@ -2,8 +2,7 @@ group 'com.github.dvekeman'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.2.21'
-    // ext.kotlin_version = '1.3.20'
+    ext.kotlin_version = '1.3.21'
 
     repositories {
         jcenter()

@@ -1,14 +1,12 @@
 package main
 
-import isc.Canvas.Companion.CENTER
-import isc.Canvas.Companion.HIDDEN
-import isc.VLayout
-import isc.createStandardButton
-import isc.createStandardLabel
-import isc.withClickDispatch
 import kotlinext.js.requireAll
 import redux.RAction
 import redux.state
+import widgets.MainListGrid
+import widgets.createStandardButton
+import widgets.createStandardLabel
+import widgets.withClickDispatch
 
 
 /** STATE / MODEL -------------------------------------------------------------------------------------------------- **/
@@ -52,9 +50,7 @@ enum class Section(val title: String) {
  */
 class MainApplication(val store: SampleStore) : ApplicationBase() {
 
-    // TODO: lateinit is dangerous...
     private lateinit var mainLayout: isc.Layout
-    // TODO: lateinit is dangerous...
     private lateinit var bodyContainer: isc.Canvas
 
     /**
@@ -70,27 +66,27 @@ class MainApplication(val store: SampleStore) : ApplicationBase() {
         store.subscribe {
             val newVisibleModule = store.getState().mainState.visibleModule
 
-            if(visibleModule == newVisibleModule){
+            if (visibleModule == newVisibleModule) {
                 println("No changes... (visibleModule: '$visibleModule') ")
                 return@subscribe
             }
 
             visibleModule = newVisibleModule
-            bodyContainer.removeChild(bodyContainer.children[0])
+            bodyContainer.removeChild(bodyContainer.children[0], name = null)
 
             when (store.state.mainState.visibleModule) {
                 Section.NONE -> {
-                    bodyContainer.addChild(createDefaultBody())
+                    bodyContainer.addChild(createDefaultBody(), name = null, autoDraw = true)
                 }
 
                 Section.NEW_LISTGRID -> {
-                    bodyContainer.addChild(MainListGrid(store).getCanvas())
+                    println("Adding NEW_LISTGRID to the bodyContainer")
+                    bodyContainer.addChild(MainListGrid(store).getCanvas(), name = null, autoDraw = true)
                 }
 
                 Section.OLD_LISTGRID -> {
-                    // The js("...") part is ugly because - for some reason - 
-                    // kotlin does not yet find the globalgwt namespace (will be fixed)
-                    bodyContainer.addChild(js("globalgwt.GlobalGWT.lookup(\"mainLayout\")"))
+                    println("Adding OLD_LISTGRID to the bodyContainer")
+                    bodyContainer.addChild(globalgwt.lookup("mainLayout").asDynamic(), name = null, autoDraw = true)
                     // bodyContainer.addChild(globalgwt.lookup("mainLayout") as isc.Canvas)
                 }
             }
@@ -105,62 +101,58 @@ class MainApplication(val store: SampleStore) : ApplicationBase() {
     }
 
     private fun createMainLayout(): isc.Layout {
-        mainLayout = isc.HLayout.create()
-        mainLayout.setOverflow(HIDDEN)
-        mainLayout.defaultLayoutAlign = CENTER
-        mainLayout.setWidth("100%")
-        mainLayout.setHeight("100%")
-        mainLayout.addMember(createBody())
+        mainLayout = isc.HLayout.create(js("""
+{ overflow: "hidden"
+, width: "100%"
+, height: "100%"
+}
+        """), null)
+        mainLayout.addMember(createBody(), position = null)
         return mainLayout
     }
 
-    private fun createBody(): VLayout {
+    @JsName("createBody")
+    private fun createBody(): isc.VLayout {
 
-        val vlayout = isc.VLayout.create()
-        vlayout.setWidth("100%")
-        vlayout.setHeight("100%")
-        vlayout.setOverflow(HIDDEN)
+        val bodyLayout = isc.VLayout.create(js("""
+{ width: "100%"
+, height: "100%"
+, overflow: "hidden"
+}
+            """
+        ), null)
+        bodyLayout.addMembers(arrayOf(createTopBar(), createBodyContainer(), createFooter()), position = null)
+        return bodyLayout
 
-        val topBar = createTopBar()
-        vlayout.addMember(topBar)
-
-        bodyContainer = createBodyContainer()
-        vlayout.addMember(bodyContainer)
-
-        val footer = createFooter()
-        vlayout.addMember(footer)
-
-        return vlayout
     }
 
     private fun createTopBar(): isc.Canvas {
-        val topbar = isc.HLayout.create()
+        val topbar = isc.HLayout.create(js("""{}"""), null)
 
         val menuButtons: Array<isc.Canvas> = Section.values()
                 .map {
                     withClickDispatch(createStandardButton(it.title), store, ChangeSection(it))
                 }
                 .toTypedArray()
-        topbar.addMembers(menuButtons)
+        topbar.addMembers(menuButtons, position = null)
 
         return topbar
     }
 
     private fun createDefaultBody(): isc.Canvas {
-        val bodyLabel = createStandardLabel("BODY")
-        return bodyLabel
+        return createStandardLabel("BODY")
     }
 
     private fun createBodyContainer(): isc.Canvas {
-        val body = isc.Canvas.create()
-        body.addChild(createDefaultBody())
+        val body = isc.Canvas.create(js("""{}"""), null)
+        body.addChild(createDefaultBody(), name = "body", autoDraw = true)
         return body
     }
 
     private fun createFooter(): isc.Canvas {
         val footerLabel = createStandardLabel("FOOTER")
-        val footer = isc.Canvas.create()
-        footer.addChild(footerLabel)
+        val footer = isc.Canvas.create(null, null)
+        footer.addChild(footerLabel, name = "footer", autoDraw = true)
         return footer
     }
 

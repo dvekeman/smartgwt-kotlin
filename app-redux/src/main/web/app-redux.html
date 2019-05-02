@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="app-redux/favicon.ico">
+    <title>Kotlin</title>
+
+    <!-- SMARTCLIENT -->
+    <SCRIPT>
+      var isomorphicDir = "builtinds/sc/";
+      window.isc_useSimpleNames = false;
+    </SCRIPT>
+    <SCRIPT SRC="builtinds/sc/modules-debug/ISC_Core.js"></SCRIPT>
+    <SCRIPT SRC="builtinds/sc/modules-debug/ISC_Foundation.js"></SCRIPT>
+    <SCRIPT SRC="builtinds/sc/modules-debug/ISC_Containers.js"></SCRIPT>
+    <SCRIPT SRC="builtinds/sc/modules-debug/ISC_Grids.js"></SCRIPT>
+    <SCRIPT SRC="builtinds/sc/modules-debug/ISC_Forms.js"></SCRIPT>
+    <SCRIPT SRC="builtinds/sc/modules-debug/ISC_DataBinding.js"></SCRIPT>
+    <SCRIPT SRC="builtinds/sc/skins/Enterprise/load_skin.js"></SCRIPT>
+    <SCRIPT>
+      isc.setAutoDraw(false);
+    </SCRIPT>
+    <!-- END SMARTCLIENT -->
+
+    <script type="text/javascript" src="builtinds/builtinds.nocache.js"></script>
+
+</head>
+<body>
+
+    <!--load the datasources-->
+    <script src="builtinds/sc/DataSourceLoader?dataSource=supplyItem,animals,employees"></script>
+
+</body>
+</html>

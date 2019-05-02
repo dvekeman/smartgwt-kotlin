@@ -16,11 +16,11 @@ kotlinFrontend {
     sourceMaps = true
 
     webpackBundle {
-        
-        bundleName = "main"
+
+        bundleName = "app"
         contentPath = file('src/main/web')
-        proxyUrl = "http://[::1]:8182"
-        port = 8188
+//        proxyUrl = "http://[::1]:8182"
+//        port = 8188
 
     }
 }
@@ -37,17 +37,73 @@ compileKotlin2Js {
     kotlinOptions.outputFile = "$project.buildDir.path/js/${project.name}.js"
     kotlinOptions.sourceMap = true
     kotlinOptions.sourceMapEmbedSources = "always"
+    // kotlin-redux wrapper doesn't seem to work with 'umd'
+    // kotlinOptions.moduleKind = 'umd'
     kotlinOptions.moduleKind = 'commonjs'
     kotlinOptions.main = "call"
 }
 
-task copyToWeb(type: Copy) {
-    from 'build/bundle'
-    include "*"
-    into("../smartgwt/src/main/webapp/app")
+//noinspection GroovyAssignabilityCheck
+task cleanWeb(type: Delete) {
+    delete '../smartgwt/src/main/webapp/app'
+    delete '../smartgwt/src/main/webapp/app-redux'
+    delete '../smartgwt/src/main/webapp/app-redux.html'
 }
 
-build.dependsOn copyToWeb
+task copyToWeb {
+    doLast {
+
+        def targetRoot = "../smartgwt/src/main/webapp"
+        // Generic `app` directory (see BuiltInDS.java where the script is injected)
+        copy {
+            from 'build/bundle'
+            into("${targetRoot}/app")
+        }
+
+        // `app-redux` specific assets
+        copy {
+            from 'src/main/web/app-redux'
+            into("${targetRoot}/app-redux")
+        }
+
+        // `app-redux` entrypoint Html file
+        copy {
+            from 'src/main/web/app-redux.html'
+            into("${targetRoot}")
+        }
+
+    }
+
+}
+copyToWeb.dependsOn cleanWeb
+copyToWeb.dependsOn bundle
+
+task copyToGwtDevWeb {
+    doLast {
+
+        def targetRoot = "../smartgwt/build/gwt/warDev"
+        // Generic `app` directory (see BuiltInDS.java where the script is injected)
+        copy {
+            from 'build/bundle'
+            into("${targetRoot}/app")
+        }
+
+        // `app-redux` specific assets
+        copy {
+            from 'src/main/web/app-redux'
+            into("${targetRoot}/app-redux")
+        }
+
+        // `app-redux` entrypoint Html file
+        copy {
+            from 'src/main/web/app-redux.html'
+            into("${targetRoot}")
+        }
+
+    }
+
+}
+copyToGwtDevWeb.dependsOn copyToWeb
 
 idea {
     module {

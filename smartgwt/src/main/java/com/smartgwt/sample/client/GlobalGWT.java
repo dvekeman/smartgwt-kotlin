@@ -20,7 +20,4 @@ public class GlobalGWT {
 		return shared.get(name);
 	}
 
-	@JsMethod(namespace = JsPackage.GLOBAL)
-	public static native void startApp();
-
 }

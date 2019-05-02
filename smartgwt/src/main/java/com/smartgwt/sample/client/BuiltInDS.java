@@ -1,6 +1,8 @@
 package com.smartgwt.sample.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.ScriptInjector;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
@@ -39,13 +41,33 @@ public class BuiltInDS implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		RPCManager.setAllowCrossDomainCalls(true);
-		
+
 		Layout mainLayout = initializeLayout();
 //		mainLayout.draw();
 		GlobalGWT.register("mainLayout", mainLayout.getOrCreateJsObj());
 
-		// GlobalGWT.startApp();
+		// To defer loading of the app js until the GWT module has finished loading
+		// Needed when the app has dependencies on dynamic JsInterop registrations
+		injectClientKtScript();
+
+		// To start the app explicitly
+		// GlobalKt.startApp();
+
 	}
+
+	private void injectClientKtScript() {
+	    GWT.log("Trying to inject 'app/app.bundle.js'");
+		if (!isInjected()) {
+			ScriptInjector.fromUrl("/app/app.bundle.js").setWindow(ScriptInjector.TOP_WINDOW).inject();
+		} else {
+            GWT.log("Script 'app/app.bundle.js' is already injected!");
+        }
+	}
+
+	private native boolean isInjected() /*-{
+      return !(typeof $wnd.app === "undefined") && !(null === $wnd.app);
+    }-*/;
+
 
 //	private void registerDebugKey() {
 //		KeyIdentifier debugKey = new KeyIdentifier();
@@ -70,7 +92,7 @@ public class BuiltInDS implements EntryPoint {
 	private ListGrid createLeftMenu() {
 		Menu m = new Menu();
 		m.getOuterElement();
-		
+
 		ListGrid grid = new ListGrid();
 		grid.setWidth(130);
 		grid.setHeight100();

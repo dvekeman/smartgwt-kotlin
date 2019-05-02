@@ -1,23 +1,30 @@
-package isc
+package widgets
 
 import main.SampleStore
 import redux.RAction
 
+@Suppress("UNUSED_PARAMETER")
 fun createStandardButton(title: String): isc.Button {
-    val button = isc.IButton.create()
-    button.setTitle(title)
-    return button
+    // second `title` is the parameter value
+    return isc.IButton.create(js("""
+{ title: title }
+        """), null)
 }
 
 fun withClickDispatch(canvas: isc.Canvas, store: SampleStore, action: RAction): isc.Canvas {
     canvas.asDynamic().click = {
+        println("Dispatching: store: ")
+        println(store)
+        println("Dispatching: action: $action")
         store.dispatch(action)
     }
     return canvas
 }
 
+@Suppress("UNUSED_PARAMETER")
 fun createStandardLabel(contents: String): isc.Label {
-    val label = isc.Label.create()
-    label.setContents(contents)
-    return label
+    // second `contents` is the parameter value
+    return isc.Label.create(js("""
+{ contents: contents }
+    """), null)
 }

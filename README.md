@@ -33,31 +33,125 @@ Instead of using plain JavaScript or TypeScript we will use Kotlin here.
 
 ## Build & Deploy
 
-There are two ways to run this application:
+### Quick start
 
-- Host it all on the same application server
-    - SmartClient backend (Java war)
-    - SmartGWT frontend (Java -> JavaScript)
-    - KotlinJS/SmartClient (Kotlin -> JavaScript)
+```
+# Compile the frontend app and distribute it into the backend
+./gradlew :app-redux:copyToWeb
 
-- Host the new frontend separately 
-    - Application server 1 (e.g. Tomcat)
-        - SmartClient backend (Java war)
-        - SmartGWT frontend (Java -> JavaScript)
-    - Application server 2 (e.g. NodeJS)
+# Start the 'backend'
+./gradlew :smartgwt:gwtRun
 
-In the second deployment we need to take into account CORS but the advantage is that we can develop a bit faster (e.g. using webpack development mode).
-The code in this example is uses the second approach. 
+# OR
+
+./gradlew :smartgwt:gwtDev
+```
+
+When running in GWT Dev mode, recompile the frontend code with this special command
+
+```
+./gradlew :app-redux:copyToGwtDevWeb
+```
+
+Then refresh the browser window. This updates the web *and* the GWT Dev output folder.
+
+### App Startup
+
+There are a few important timings to load the frontend JS script:
+
+- loading the JS file itself
+- starting the frontend app
+
+There are several options to do this.
+
+#### Automatic startup
+
+The `main` function can be called automatically when the JS file is loaded
+
+**build.gradle**
+
+```
+compileKotlin2Js {
+    kotlinOptions.main = "call"
+}
+```
+
+This means that the app will startup as soon as the file is loaded.
+If the app depends on GWT then it's important to defer this until GWT has finished loading (see section _Deferred Loading_ below)
+
+#### Manual startup
+
+When disabled the automatic call to `main`
+
+**build.gradle**
+
+```
+compileKotlin2Js {
+    kotlinOptions.main = "noCall"
+}
+```
+
+The script will not start automatically upon loading. Instead the `startApp` function can be called explicitly
+
+**main.kt**
+
+```
+@JsName("startApp")
+val startApp: () -> Unit = {
+  ...
+}
+```
+
+Important to remark here: if there is any dependencies to a GWT function, for example
+
+**MainApplication.kt**
+
+```
+Section.OLD_LISTGRID -> {
+    bodyContainer.addChild(
+        globalgwt.lookup("mainLayout").asDynamic(), name = null, autoDraw = true
+    )
+}
+
+```
+
+Then the script loading must still be deferred until GWT has finished loading (and has successfully registered `lookup` in the `globalgwt` namespace).
+(see section _Deferred Loading_ below)
+ 
+#### Defered loading
+
+When loading the app script dynamically using SmartGWTs `onModuleLoad` then the JS does not need to be included in the HTML page.
+Instead see the following example on how to load the script. It will automatically inject the script tag into the page.
+
+**BuiltInDs.java**
+
+```
+	public void onModuleLoad() {
+	    ...
+	    
+		// To defer loading of the app js until the GWT module has finished loading
+		// Needed when the app has dependencies on dynamic JsInterop registrations
+		injectClientKtScript();
+
+	}
+
+	private void injectClientKtScript() {
+		if (!isInjected()) {
+			ScriptInjector.fromUrl("/app/app.bundle.js").setWindow(ScriptInjector.TOP_WINDOW).inject();
+		}
+	}
+
+	private native boolean isInjected() /*-{
+      return !(typeof $wnd.app === "undefined") && !(null === $wnd.app);
+    }-*/;
+```
 
 ## Code
 
-There are three sub-projects
+These are the sub-projects
 
 - smartgwt: a copy of the `builtinds` project from the SmartGWT samples (with some changes to fit into a gradle project)
 - app-redux: an example frontend using Kotlin JS + SmartClient + Redux
-- app-react-redux: **ABANDONED** work but I kept it here for reference. The React + SmartClient combination in this setup felt very unnatural.
-
-The rest of this section mainly deals with `app-redux` and talks a little bit about the first one, especially the changes I made to allow communication between SmartGWT and SmartClient.
 
 ### Registry
 
@@ -108,23 +202,130 @@ The section below discusses the follow topics
 #### Kotlin + SmartClient
 
 SmartClient is a JavaScript widget library. The company behind it provides a TypeScript binding (smartclient.d.ts) 
-which can be found inside its distribution. Unfortunately there are not Kotlin bindings (yet?).
+which can be found inside its distribution. Unfortunately there are no official Kotlin bindings (yet?).
 
-In this prototype project we used [`ts2kt`][9] to generate kotlin bindings. However these were insufficient (and didn't compile) so they
-were manually tweaked (to compile). While updating the code, the bindings will be further patched to reflect the right SmartClient API.
+In this prototype project we first used [`ts2kt`][9] to generate kotlin bindings. However these were insufficient (and didn't compile).
+We developed our own typescript-to-kotlin bindings ([`tsinterop`][10])
 
-*smartclient.isc.kt*
+**Creating SmartClient JS widgets**
+
+Basic definition
 
 ```
-@file:Suppress("INTERFACE_WITH_SUPERCLASS", "OVERRIDING_FINAL_MEMBER", "RETURN_TYPE_MISMATCH_ON_OVERRIDE", "CONFLICTING_OVERLOADS", "EXTERNAL_DELEGATION", "NESTED_CLASS_IN_EXTERNAL_INTERFACE")
-@file:JsQualifier("isc")
-package isc
-...
-external sealed class Canvas : BaseWidget {
-    open var canvasItem: CanvasItem = definedExternally
-    open var animateTime: Number = definedExternally
-    ...    
+val label = isc.Label.create(null, null)
 ```
+
+Setting properties on widgets can be done in multiple ways
+
+1. Using the typed API
+
+Property example:
+
+```
+label.width = "100%"
+```
+
+Method example: 
+
+```
+label.setContents("Blah")
+```
+
+2. Using JS syntax
+
+This is recommended only for simple properties
+
+```
+val label = isc.Label.create(js("""
+{ width: "100%"
+, contents: "blah"
+}
+"""), null)
+```
+
+The `js` function only takes String constants. This means the following is allowed
+
+```
+val myContent = "blah"
+val label = isc.Label.create(js("""
+{ width: "100%"
+, contents: "$myContent"
+}
+"""), null)
+```
+
+Only because the `myContent` variable is a final constant. The following is **not** allowed
+
+```
+fun createLabel(myContent: String): isc.Label {
+  val label = isc.Label.create(js("""
+{ contents: "$myContent" }
+  """), null)
+}
+```
+
+Because in the example above, `myContent` is a function variable instead of a constant. However, due to the nature
+of how the `js` function works we can just write
+
+```
+fun createLabel(myContent: String): isc.Label {
+  val label = isc.Label.create(js("""
+{ contents: myContent }
+  """), null)
+}
+
+```
+(note: the only difference is `$myContent` vs `myContent`)
+
+This works because the generated JS looks like:
+
+```
+function createStandardLabel(contents) {
+    return Label$Companion.create({contents: contents}, null);
+}
+```
+
+!!! To be investigated how this behaves with JS obfuscation and minimization !!!
+
+Similar for **methods**
+
+We could write:
+
+```
+private fun createMainLayout(): isc.Layout {
+    val mainLayout = isc.HLayout.create(js("""
+{ overflow: "hidden"
+, width: "100%"
+, height: "100%"
+}
+    """), null)
+    mainLayout.addMember(createBody(), position = null)
+    ...
+}
+```
+
+Here we use the typed API to add the member. Or we could write
+
+```
+private fun createMainLayout(): isc.Layout {
+    val mainLayout = isc.HLayout.create(js("""
+{ overflow: "hidden"
+, width: "100%"
+, height: "100%"
+, members: [ createBody() ]
+}
+    """), null)
+    ...
+}
+
+@JsName("createBody")
+private fun createBody(): isc.VLayout {
+  ...
+}
+```
+**Note** the annotation `@JsName("createBody")` to ensure the name in JS exists.
+
+Although the above syntax is correct, it's probably better not to use it and instead use the typed API.
 
 #### Kotlin + Redux
 
@@ -378,3 +579,4 @@ fun withClickDispatch(canvas: isc.Canvas, store: SampleStore, action: RAction): 
 [7]: https://guide.elm-lang.org/architecture/
 [8]: https://github.com/JetBrains/kotlin-wrappers/tree/master/kotlin-redux
 [9]: https://github.com/Kotlin/ts2kt
+[10]: https://github.com/dvekeman/tsinterop
